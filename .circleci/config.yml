@@ -12,8 +12,8 @@ jobs:
     - run:
         name: Get info
         command: |
-          uname -a;
-          free -h;
+          uname -a
+          free -h
           cat /etc/os-release
     - run:
         name: Install kubectl
@@ -54,13 +54,13 @@ jobs:
     - run:
         name: Helm init
         command: |
-          helm init;
+          helm init
           sleep 30
     - run:
         name: Helm install
         command: |
-          helm upgrade --install demo --set service.type=NodePort demo;
-          sleep 30;
+          helm upgrade --install demo --set service.type=NodePort demo
+          sleep 30
           helm status demo
     - run:
         name: Test deployment
