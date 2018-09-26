@@ -52,6 +52,10 @@ jobs:
               chmod +x linux-amd64/helm && \
               sudo mv linux-amd64/helm /usr/local/bin/
     - run:
+        name: Helm init
+        command: |
+          helm init
+    - run:
         name: Test kubectl
         command: |
           sudo kubectl get deployment
