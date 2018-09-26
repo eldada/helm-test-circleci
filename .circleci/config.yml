@@ -54,8 +54,11 @@ jobs:
     - run:
         name: Helm init
         command: |
-          helm init
+          helm init;
+          sleep 30
     - run:
-        name: Test kubectl
+        name: Helm install
         command: |
-          sudo kubectl get deployment
+          helm upgrade --install demo --set service.type=NodePort demo;
+          sleep 30;
+          helm status demo
