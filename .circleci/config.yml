@@ -62,3 +62,29 @@ jobs:
           helm upgrade --install demo --set service.type=NodePort demo;
           sleep 30;
           helm status demo
+    - run:
+        name: Test deployment
+        command: |
+          node_ip=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+          node_port=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services demo)
+
+          echo "Service demo node port is ${node_port}"
+
+          url=http://${node_ip}:${node_port}
+
+          # A plain curl to the service to see output (debug)
+          echo "Verbose curl -v ${url}"
+          echo -----------
+          curl -v ${url}
+          echo -----------
+
+          echo "Testing http code for ${url}"
+          response_code=$(curl -s -o /dev/null -w "%{http_code}" ${url})
+
+          echo "Response code is ${response_code}"
+          if [ "${response_code}" == 200 ]; then
+            echo "SUCCESS"
+          else
+            echo "FAILED"
+            exit 1
+          fi
